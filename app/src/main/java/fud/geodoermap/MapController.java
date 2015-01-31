@@ -21,6 +21,7 @@ public class MapController implements GoogleMap.OnMapClickListener,
     TextView showText;
     Context context;
     GeoInfo geo;
+    public boolean isMoveGet = false;
 
     private onGeoLoadedLisitener l = null;
 
@@ -56,12 +57,14 @@ public class MapController implements GoogleMap.OnMapClickListener,
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        map.clear();
-        map.addMarker(new MarkerOptions().title("設定位置").position(new LatLng(cameraPosition.target.latitude,cameraPosition.target.longitude)));
-        GeocodingAPI a = new GeocodingAPI(context,cameraPosition.target.latitude+","+cameraPosition.target.longitude);
-        geo = new GeoInfo(new LatLng(cameraPosition.target.latitude,cameraPosition.target.longitude));
-        a.setOnStatusLisitener(this);
-        a.getGeocodingApiAddress(geo,showText);
+        if(isMoveGet){
+            map.clear();
+            map.addMarker(new MarkerOptions().title("設定位置").position(new LatLng(cameraPosition.target.latitude,cameraPosition.target.longitude)));
+            GeocodingAPI a = new GeocodingAPI(context,cameraPosition.target.latitude+","+cameraPosition.target.longitude);
+            geo = new GeoInfo(new LatLng(cameraPosition.target.latitude,cameraPosition.target.longitude));
+            a.setOnStatusLisitener(this);
+            a.getGeocodingApiAddress(geo,showText);
+        }
     }
 
     @Override
@@ -81,6 +84,10 @@ public class MapController implements GoogleMap.OnMapClickListener,
         geo = new GeoInfo(setText);
         a.setOnStatusLisitener(this);
         a.getGeocodingApiLatLng(map,geo);
+    }
+
+    public void isMoveGet(boolean a){
+        this.isMoveGet = a;
     }
 
     @Override

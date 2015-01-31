@@ -74,6 +74,7 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
         mMap.addMarker(new MarkerOptions().title("當前位置").draggable(true).position(nowLocation));
 
         mapController = new MapController(getApplicationContext(),mMap,show);
+        mapController.isMoveGet(true);
         mapController.setOnGeoLoadedLisitener(this);
 
     }
@@ -86,5 +87,6 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
     @Override
     public void onGeoLoaded(GeoInfo geo) {
         Toast.makeText(getApplicationContext(),geo.name,Toast.LENGTH_SHORT).show();
+        //儲存寫在這裡
     }
 }
