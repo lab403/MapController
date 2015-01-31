@@ -77,6 +77,7 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
         mapController.isMoveGet(true);
         mapController.setOnGeoLoadedLisitener(this);
 
+
     }
 
     @Override
@@ -84,9 +85,13 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
         mapController.searchPlace(searchText);
     }
 
+    /**
+     * 當會傳地理資訊的時候觸發
+     *
+     * @param geo 地理資訊，包含name,latlng
+     */
     @Override
     public void onGeoLoaded(GeoInfo geo) {
-        Toast.makeText(getApplicationContext(),geo.name,Toast.LENGTH_SHORT).show();
-        //儲存寫在這裡
+        Toast.makeText(getApplicationContext(), geo.name, Toast.LENGTH_SHORT).show();
     }
 }

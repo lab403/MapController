@@ -26,6 +26,10 @@ public class MapController implements GoogleMap.OnMapClickListener,
     private onGeoLoadedLisitener l = null;
 
     public interface onGeoLoadedLisitener {
+        /**
+         * 當會傳地理資訊的時候觸發
+         * @param geo 地理資訊，包含name,latlng
+         */
         public void onGeoLoaded(GeoInfo geo);
     }
 
@@ -33,11 +37,23 @@ public class MapController implements GoogleMap.OnMapClickListener,
         this.l = l;
     }
 
+
+    /**
+     *
+     * @param context
+     * @param map 給予GoogleMap的元件
+     */
     public MapController(Context context,GoogleMap map){
         this.map = map;
         this.context = context;
     }
 
+    /**
+     *
+     * @param context
+     * @param map 給予GoogleMap的元件
+     * @param showText 給予TextView的元件用於顯示
+     */
     public MapController(Context context,GoogleMap map,TextView showText){
         this.map = map;
         this.showText = showText;
@@ -72,6 +88,10 @@ public class MapController implements GoogleMap.OnMapClickListener,
         return true;
     }
 
+    /**
+     * 設定一個EditText元件,那上面的字串值來搜尋
+     * @param setText 給予EditText元件
+     */
     public void searchPlace(EditText setText){
         GeocodingAPI a = new GeocodingAPI(context,setText.getText().toString());
         geo = new GeoInfo(setText.getText().toString());
@@ -79,6 +99,10 @@ public class MapController implements GoogleMap.OnMapClickListener,
         a.getGeocodingApiLatLng(map,geo);
     }
 
+    /**
+     * 設定一個字串,拿來做搜尋,也可使用經緯度如"123.456,888.999"
+     * @param setText
+     */
     public void searchPlace(String setText){
         GeocodingAPI a = new GeocodingAPI(context,setText);
         geo = new GeoInfo(setText);
@@ -86,6 +110,10 @@ public class MapController implements GoogleMap.OnMapClickListener,
         a.getGeocodingApiLatLng(map,geo);
     }
 
+    /**
+     * 設定是否要開啟移動為自動抓取位置
+     * @param a 傳入True,False
+     */
     public void isMoveGet(boolean a){
         this.isMoveGet = a;
     }

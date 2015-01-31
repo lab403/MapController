@@ -54,7 +54,10 @@ public class GeocodingAPI {
         return Url;
     }
 
-
+    /**
+     * 給予TextView設定顯示的位置，回傳地址資訊
+     * @param showText
+     */
 	public void getGeocodingApiAddress(final TextView showText){
         Ion.with(context)
         .load(getUrl())
@@ -72,6 +75,33 @@ public class GeocodingAPI {
         });
     }
 
+    /**
+     * 給予GeoInfo設定顯示的位置，讓回傳的地址存入GeoInfo
+     * @param showText
+     */
+    public void getGeocodingApiAddress(final GeoInfo geo){
+        Ion.with(context)
+        .load(getUrl())
+        .asJsonObject()
+        .setCallback(new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                // do stuff with the result or error
+                GeocodingAPIJsonDecode JsonDecode = new GeocodingAPIJsonDecode(context, result);
+                String place=JsonDecode.getAddress();
+                geo.setText(place);
+//                Toast.makeText(context,place,Toast.LENGTH_SHORT).show();
+
+                status.onStatus(true);
+            }
+        });
+    }
+
+    /**
+     * 給予GeoInfo和TextView能讓回傳的地址存入GeoInfo且顯示於TextView
+     * @param geo
+     * @param showText
+     */
     public void getGeocodingApiAddress(final GeoInfo geo,final TextView showText){
         Ion.with(context)
         .load(getUrl())
@@ -89,7 +119,11 @@ public class GeocodingAPI {
         });
     }
 
-    public void getGeocodingApiLatLng(){
+    /**
+     * 給予GeoInfo讓回傳的經緯度存入GeoInfo
+     * @param geo
+     */
+    public void getGeocodingApiLatLng(final GeoInfo geo){
         Ion.with(context)
         .load(getUrl())
         .asJsonObject()
@@ -100,11 +134,17 @@ public class GeocodingAPI {
                 GeocodingAPIJsonDecode JsonDecode = new GeocodingAPIJsonDecode(context, result);
                 LatLng LatLng = JsonDecode.getLatLng();
                 Toast.makeText(context, LatLng.latitude + "," + LatLng.longitude, Toast.LENGTH_SHORT).show();
+                geo.setLatlng(LatLng);
                 status.onStatus(true);
             }
         });
     }
 
+    /**
+     * 給予GeoInfo和GoogleMap讓回傳的經緯度存入GeoInfo,且map跳轉到經緯度上
+     * @param mMap
+     * @param geo
+     */
 	public void getGeocodingApiLatLng(final GoogleMap mMap, final GeoInfo geo){
         Ion.with(context)
         .load(getUrl())
