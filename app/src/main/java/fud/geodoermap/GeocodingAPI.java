@@ -77,7 +77,7 @@ public class GeocodingAPI {
 
     /**
      * 給予GeoInfo設定顯示的位置，讓回傳的地址存入GeoInfo
-     * @param showText
+     * @param geo
      */
     public void getGeocodingApiAddress(final GeoInfo geo){
         Ion.with(context)
@@ -89,7 +89,7 @@ public class GeocodingAPI {
                 // do stuff with the result or error
                 GeocodingAPIJsonDecode JsonDecode = new GeocodingAPIJsonDecode(context, result);
                 String place=JsonDecode.getAddress();
-                geo.setText(place);
+                geo.setName(place);
 //                Toast.makeText(context,place,Toast.LENGTH_SHORT).show();
 
                 status.onStatus(true);

@@ -31,7 +31,7 @@ public class GeoInfo {
     }
 
     /**　
-     * 於地理位置設定地點名稱,如為空值,地點名稱為 null
+     * 於地理位置設定地點名稱,如為空值,地點名稱為 "null"
      * @param str
      */
     public void setName(String str){
