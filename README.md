@@ -2,20 +2,6 @@
 
 能在Android GoogleMap元件上獲取地址、經緯度
 
-
-### Features
-
-**v1.15.6**
-* 新增網路判斷
-* 新增設定WifiOnly抓取資料
-
-**v1.15.5**
-* 拖移Map獲取地址、經緯度
-* 點擊Map獲取地址、經緯度
-* 搜尋地址、經緯度能跳轉Map上的位置
-
-
-
 # Usage
 
 ### 宣告MapController
@@ -43,4 +29,20 @@ mapController.setOnGeoLoadedLisitener(this);
 public void onGeoLoaded(GeoInfo geo) {
     Toast.makeText(getApplicationContext(), geo.name, Toast.LENGTH_SHORT).show();
 }
+
+//開始載入資料的時候觸發
+public void onGeoLoading() {
+    Log.d("Loading","開始載入");
+}
 ```
+### Features
+
+**v1.15.6**
+* 新增onGeoLoading Lisitener
+* 新增網路判斷
+* 新增設定WifiOnly抓取資料
+
+**v1.15.5**
+* 拖移Map獲取地址、經緯度
+* 點擊Map獲取地址、經緯度
+* 搜尋地址、經緯度能跳轉Map上的位置
