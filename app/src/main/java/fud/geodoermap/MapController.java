@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -35,7 +34,7 @@ public class MapController implements GoogleMap.OnMapClickListener,
          * 當會傳地理資訊的時候觸發
          * @param geo 地理資訊，包含name,latlng
          */
-        public void onGeoLoaded(GeoInfo geo);
+        public void onGeoLoaded(GeoInfo geo,int status);
 
         /**
          * 開始載入資料的時候觸發
@@ -147,8 +146,7 @@ public class MapController implements GoogleMap.OnMapClickListener,
      * @return 有網路回傳True,沒有網路回傳false
      */
     private boolean isInternetConnect(){
-//        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
-        final  ConnectivityManager cm = (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         if(info!=null && info.isConnected()){
             Log.d("wifi種類",info.getTypeName());
@@ -156,14 +154,16 @@ public class MapController implements GoogleMap.OnMapClickListener,
                 if(info.getType()==ConnectivityManager.TYPE_WIFI){
                     return true;
                 }else{
-                    Toast.makeText(context,"沒有Wifi",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context,"沒有Wifi",Toast.LENGTH_SHORT).show();
+                    l.onGeoLoaded(this.geo, GeoStatus.WIFI_FAIL);
                     return false;
                 }
             }else{
                 return true;
             }
         }else{
-            Toast.makeText(context,"沒有網路",Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context,"沒有網路",Toast.LENGTH_SHORT).show();
+            l.onGeoLoaded(this.geo, GeoStatus.Network_FAIL);
             return false;
         }
     }
@@ -179,9 +179,8 @@ public class MapController implements GoogleMap.OnMapClickListener,
     @Override
     public void onStatus(boolean status) {
         if(status){
-            if(!this.geo.name.equals("null") || (this.geo.latlng.longitude!=-1 && this.geo.latlng.latitude!=-1)){
-                l.onGeoLoaded(this.geo);
-            }
+            if(!this.geo.name.equals("null") || (this.geo.latlng.longitude!=-1 && this.geo.latlng.latitude!=-1))
+                l.onGeoLoaded(this.geo, GeoStatus.SUCESS);
         }
     }
 }

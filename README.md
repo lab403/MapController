@@ -26,8 +26,15 @@ mapController.setOnGeoLoadedLisitener(this);
 
 //當獲取地址或經緯度時geo能直接拿取資料
 @Override
-public void onGeoLoaded(GeoInfo geo) {
-    Toast.makeText(getApplicationContext(), geo.name, Toast.LENGTH_SHORT).show();
+@Override
+public void onGeoLoaded(GeoInfo geo,int status) {
+    if(status==GeoStatus.Network_FAIL){
+        Log.e("fail","位置："+geo.name+",座標："+geo.latlng+",沒有網路");
+    }else if(status==GeoStatus.WIFI_FAIL){
+        Log.e("fail","位置："+geo.name+",座標："+geo.latlng+",只有3G,沒有wifi");
+    }else if(status==GeoStatus.SUCESS){
+        Log.d("Loaded","位置："+geo.name+",座標："+geo.latlng+",載入完成");
+    }
 }
 
 //開始載入資料的時候觸發
@@ -40,6 +47,7 @@ public void onGeoLoading() {
 **v1.15.6**
 * 新增onGeoLoading Lisitener
 * 新增網路判斷
+* 網路狀態回傳
 * 新增設定WifiOnly抓取資料
 
 **v1.15.5**

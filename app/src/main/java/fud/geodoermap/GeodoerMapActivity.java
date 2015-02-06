@@ -91,8 +91,14 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
      * @param geo 地理資訊，包含name,latlng
      */
     @Override
-    public void onGeoLoaded(GeoInfo geo) {
-        Log.d("Loaded","載入完成："+geo.name);
+    public void onGeoLoaded(GeoInfo geo,int status) {
+        if(status==GeoStatus.Network_FAIL){
+            Log.e("fail","位置："+geo.name+",座標："+geo.latlng+",沒有網路");
+        }else if(status==GeoStatus.WIFI_FAIL){
+            Log.e("fail","位置："+geo.name+",座標："+geo.latlng+",只有3G,沒有wifi");
+        }else if(status==GeoStatus.SUCESS){
+            Log.d("Loaded","位置："+geo.name+",座標："+geo.latlng+",載入完成");
+        }
     }
 
     /**
