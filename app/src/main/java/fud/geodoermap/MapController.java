@@ -163,7 +163,7 @@ public class MapController implements GoogleMap.OnMapClickListener,
             }
         }else{
 //            Toast.makeText(context,"沒有網路",Toast.LENGTH_SHORT).show();
-            l.onGeoLoaded(this.geo, GeoStatus.Network_FAIL);
+            l.onGeoLoaded(this.geo, GeoStatus.NETWORK_FAIL);
             return false;
         }
     }
