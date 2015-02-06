@@ -4,18 +4,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GeodoerMapActivity extends ActionBarActivity implements View.OnClickListener,MapController.onGeoLoadedLisitener{
+public class GeodoerMapActivity extends ActionBarActivity implements View.OnClickListener,MapController.onGeoLoadLisitener{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Toolbar toolBar;
@@ -75,8 +75,8 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
 
         mapController = new MapController(getApplicationContext(),mMap,show);
         mapController.isMoveGet(true);
+        mapController.isWifiOnly(true);
         mapController.setOnGeoLoadedLisitener(this);
-
 
     }
 
@@ -92,6 +92,14 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
      */
     @Override
     public void onGeoLoaded(GeoInfo geo) {
-        Toast.makeText(getApplicationContext(), geo.name, Toast.LENGTH_SHORT).show();
+        Log.d("Loaded","載入完成："+geo.name);
+    }
+
+    /**
+     * 開始載入資料的時候觸發
+     */
+    @Override
+    public void onGeoLoading() {
+        Log.d("Loading","開始載入");
     }
 }

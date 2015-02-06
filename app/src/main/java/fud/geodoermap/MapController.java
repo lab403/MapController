@@ -1,8 +1,12 @@
 package fud.geodoermap;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -19,21 +23,28 @@ public class MapController implements GoogleMap.OnMapClickListener,
                                       GeocodingAPI.onStatusLisitener{
     GoogleMap map;
     TextView showText;
-    Context context;
+    private Context context;
     GeoInfo geo;
-    public boolean isMoveGet = false;
+    public boolean isMoveGet = true;
+    private boolean isWifiOnly = false;
 
-    private onGeoLoadedLisitener l = null;
+    private onGeoLoadLisitener l = null;
 
-    public interface onGeoLoadedLisitener {
+    public interface onGeoLoadLisitener {
         /**
          * 當會傳地理資訊的時候觸發
          * @param geo 地理資訊，包含name,latlng
          */
         public void onGeoLoaded(GeoInfo geo);
+
+        /**
+         * 開始載入資料的時候觸發
+         */
+        public void onGeoLoading();
+
     }
 
-    public void setOnGeoLoadedLisitener(onGeoLoadedLisitener l){
+    public void setOnGeoLoadedLisitener(onGeoLoadLisitener l){
         this.l = l;
     }
 
@@ -66,9 +77,13 @@ public class MapController implements GoogleMap.OnMapClickListener,
     public void onMapClick(LatLng latLng) {
         map.clear();
         map.addMarker(new MarkerOptions().title("設定位置").position(latLng));
-        GeocodingAPI a = new GeocodingAPI(context,latLng.latitude+","+latLng.longitude);
-        a.setOnStatusLisitener(this);
-        a.getGeocodingApiAddress(geo,showText);
+        l.onGeoLoading();
+        geo = new GeoInfo(latLng);
+        if(isInternetConnect()){
+            GeocodingAPI a = new GeocodingAPI(context,latLng.latitude+","+latLng.longitude);
+            a.setOnStatusLisitener(this);
+            a.getGeocodingApiAddress(geo,showText);
+        }
     }
 
     @Override
@@ -76,10 +91,13 @@ public class MapController implements GoogleMap.OnMapClickListener,
         if(isMoveGet){
             map.clear();
             map.addMarker(new MarkerOptions().title("設定位置").position(new LatLng(cameraPosition.target.latitude,cameraPosition.target.longitude)));
-            GeocodingAPI a = new GeocodingAPI(context,cameraPosition.target.latitude+","+cameraPosition.target.longitude);
+            l.onGeoLoading();
             geo = new GeoInfo(new LatLng(cameraPosition.target.latitude,cameraPosition.target.longitude));
-            a.setOnStatusLisitener(this);
-            a.getGeocodingApiAddress(geo,showText);
+            if(isInternetConnect()){
+                GeocodingAPI a = new GeocodingAPI(context,cameraPosition.target.latitude+","+cameraPosition.target.longitude);
+                a.setOnStatusLisitener(this);
+                a.getGeocodingApiAddress(geo,showText);
+            }
         }
     }
 
@@ -93,10 +111,13 @@ public class MapController implements GoogleMap.OnMapClickListener,
      * @param setText 給予EditText元件
      */
     public void searchPlace(EditText setText){
-        GeocodingAPI a = new GeocodingAPI(context,setText.getText().toString());
+        l.onGeoLoading();
         geo = new GeoInfo(setText.getText().toString());
-        a.setOnStatusLisitener(this);
-        a.getGeocodingApiLatLng(map,geo);
+        if(isInternetConnect()){
+            GeocodingAPI a = new GeocodingAPI(context,setText.getText().toString());
+            a.setOnStatusLisitener(this);
+            a.getGeocodingApiLatLng(map,geo);
+        }
     }
 
     /**
@@ -104,18 +125,55 @@ public class MapController implements GoogleMap.OnMapClickListener,
      * @param setText
      */
     public void searchPlace(String setText){
-        GeocodingAPI a = new GeocodingAPI(context,setText);
+        l.onGeoLoading();
         geo = new GeoInfo(setText);
-        a.setOnStatusLisitener(this);
-        a.getGeocodingApiLatLng(map,geo);
+        if(isInternetConnect()){
+            GeocodingAPI a = new GeocodingAPI(context,setText);
+            a.setOnStatusLisitener(this);
+            a.getGeocodingApiLatLng(map,geo);
+        }
     }
 
     /**
      * 設定是否要開啟移動為自動抓取位置
-     * @param a 傳入True,False
+     * @param a 傳入false為關閉移動為自動抓取位置，預設true
      */
     public void isMoveGet(boolean a){
         this.isMoveGet = a;
+    }
+
+    /**
+     * 回傳當前網路狀態
+     * @return 有網路回傳True,沒有網路回傳false
+     */
+    private boolean isInternetConnect(){
+//        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
+        final  ConnectivityManager cm = (ConnectivityManager)context.getSystemService(context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if(info!=null && info.isConnected()){
+            Log.d("wifi種類",info.getTypeName());
+            if(isWifiOnly){
+                if(info.getType()==ConnectivityManager.TYPE_WIFI){
+                    return true;
+                }else{
+                    Toast.makeText(context,"沒有Wifi",Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }else{
+                return true;
+            }
+        }else{
+            Toast.makeText(context,"沒有網路",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    /**
+     * 設定是否只使用wifi獲取位置
+     * @param a 設定true只使用wifi獲取位置，預設false
+     */
+    public void isWifiOnly(boolean a){
+        isWifiOnly = a;
     }
 
     @Override

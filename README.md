@@ -4,6 +4,12 @@
 
 
 ### Features
+
+**v1.15.6**
+* 新增網路判斷
+* 新增設定WifiOnly抓取資料
+
+**v1.15.5**
 * 拖移Map獲取地址、經緯度
 * 點擊Map獲取地址、經緯度
 * 搜尋地址、經緯度能跳轉Map上的位置
@@ -20,6 +26,9 @@ MapController mapController = new MapController(getApplicationContext(),mMap,sho
 
 //可關閉拖移GoogleMap就獲取地址、經緯度，能改善數據流量
 mapController.isMoveGet(true);
+
+//可設定是否僅使用Wifi抓取位置
+mapController.isWifiOnly(true);
 ```
 
 

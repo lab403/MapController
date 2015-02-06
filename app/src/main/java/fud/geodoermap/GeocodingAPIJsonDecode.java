@@ -6,7 +6,6 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 
 
 public class GeocodingAPIJsonDecode {
@@ -29,8 +28,8 @@ public class GeocodingAPIJsonDecode {
                 Address="null";
                 Log.e("Error", "沒有拿到json");
             }
-		} catch (JsonParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			Log.e("E","沒有網路");
 		}
 		return Address;
 	}
@@ -50,8 +49,8 @@ public class GeocodingAPIJsonDecode {
                 LatLng = new LatLng(-1,-1);
                 Log.e("Error", "沒有拿到json");
 			}
-		} catch (JsonParseException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+            Log.e("E","沒有網路");
 		}
 		return LatLng;
 	}

@@ -44,7 +44,6 @@ public class GeocodingAPI {
         try {
             Url+="address="+URLEncoder.encode(address,"UTF-8");
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         Url+="&language=zh-TW";
@@ -67,9 +66,8 @@ public class GeocodingAPI {
             public void onCompleted(Exception e, JsonObject result) {
                 // do stuff with the result or error
                 GeocodingAPIJsonDecode JsonDecode = new GeocodingAPIJsonDecode(context, result);
-                String place=JsonDecode.getAddress();
+                String place = JsonDecode.getAddress();
                 showText.setText(place);
-//                Toast.makeText(context,place,Toast.LENGTH_SHORT).show();
                 status.onStatus(true);
             }
         });
@@ -88,10 +86,8 @@ public class GeocodingAPI {
             public void onCompleted(Exception e, JsonObject result) {
                 // do stuff with the result or error
                 GeocodingAPIJsonDecode JsonDecode = new GeocodingAPIJsonDecode(context, result);
-                String place=JsonDecode.getAddress();
+                String place = JsonDecode.getAddress();
                 geo.setName(place);
-//                Toast.makeText(context,place,Toast.LENGTH_SHORT).show();
-
                 status.onStatus(true);
             }
         });
