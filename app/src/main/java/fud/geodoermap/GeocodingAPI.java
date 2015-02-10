@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 public class GeocodingAPI {
 	Context context;
 	String address;
-	String key="AIzaSyBaGnGbSke5z04QDox_qXpLCxU6sbqkAMg";
+//	String key="AIzaSyBaGnGbSke5z04QDox_qXpLCxU6sbqkAMg";
 	String Url="https://maps.googleapis.com/maps/api/geocode/json?";
 
 
@@ -48,7 +48,7 @@ public class GeocodingAPI {
         }
         Url+="&language=zh-TW";
         Url+="&sensor=false";
-        Url+="&key="+this.key;
+//        Url+="&key="+this.key;
         Log.i("Url", Url);
         return Url;
     }

@@ -44,6 +44,9 @@ public void onGeoLoading() {
 ```
 ### Features
 
+**v1.15.7**
+* 更新第3版Geocoding API
+
 **v1.15.6**
 * 新增onGeoLoading Lisitener
 * 新增網路判斷

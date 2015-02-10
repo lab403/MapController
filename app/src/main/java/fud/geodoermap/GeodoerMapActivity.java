@@ -92,7 +92,7 @@ public class GeodoerMapActivity extends ActionBarActivity implements View.OnClic
      */
     @Override
     public void onGeoLoaded(GeoInfo geo,int status) {
-        if(status==GeoStatus.Network_FAIL){
+        if(status==GeoStatus.NETWORK_FAIL){
             Log.e("fail","位置："+geo.name+",座標："+geo.latlng+",沒有網路");
         }else if(status==GeoStatus.WIFI_FAIL){
             Log.e("fail","位置："+geo.name+",座標："+geo.latlng+",只有3G,沒有wifi");
